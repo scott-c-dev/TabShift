@@ -9,5 +9,9 @@ export default defineManifest({
     default_popup: 'index.html',
     default_title: 'Divactive Tab Manager',
   },
-  permissions: ['tabs'],
+  background: {
+    service_worker: 'src/background.ts',
+    type: 'module',
+  },
+  permissions: ['contextMenus', 'tabs'],
 })
