@@ -10,6 +10,7 @@ export function calculateTabIdsToMove(
   activeTabIndex: number,
   direction: SplitDirection,
 ): number[] {
+  // Moving every tab into a new window is a no-op from the user's perspective.
   if (tabs.length < 2 || !tabs.some((tab) => tab.index === activeTabIndex)) {
     return []
   }
@@ -24,6 +25,7 @@ export function calculateTabIdsToMove(
     return []
   }
 
+  // Chrome can omit tab IDs in some contexts, so only return tabs that can be moved.
   return selectedTabs
     .map((tab) => tab.id)
     .filter((tabId): tabId is number => typeof tabId === 'number')

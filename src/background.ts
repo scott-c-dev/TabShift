@@ -48,6 +48,7 @@ async function updateContextMenuState() {
 
   const { activeTab, tabs } = activeWindowTabs
 
+  // Use the same pure calculation for menu validity and click handling.
   await Promise.all(
     Object.keys(MENU_ITEMS).map((direction) =>
       chrome.contextMenus.update(direction, {
@@ -86,6 +87,7 @@ async function splitTabs(direction: SplitDirection) {
     return
   }
 
+  // Creating the window with the active tab keeps focus where the user initiated the split.
   const newWindow = await chrome.windows.create({
     focused: true,
     tabId: activeTabId,
@@ -96,6 +98,7 @@ async function splitTabs(direction: SplitDirection) {
   if (newWindow?.id !== undefined && remainingTabIds.length > 0) {
     await chrome.tabs.move(remainingTabIds, {
       windowId: newWindow.id,
+      // Left splits need prepending so tabs remain in their original left-to-right order.
       index: direction === 'current-and-left' ? 0 : -1,
     })
   }
