@@ -3,12 +3,12 @@ import { calculateTabIdsToMove, type SplitDirection } from './tabs/calculateTabI
 const MENU_ITEMS: Record<SplitDirection, chrome.contextMenus.CreateProperties> = {
   'current-and-right': {
     id: 'current-and-right',
-    title: 'Split current tab AND all tabs on the RIGHT to a new window',
+    title: '➡️ Move this && right tabs to new window',
     contexts: ['all'],
   },
   'current-and-left': {
     id: 'current-and-left',
-    title: 'Split current tab AND all tabs on the LEFT to a new window',
+    title: '⬅️ Move this && left tabs to new window',
     contexts: ['all'],
   },
 }
