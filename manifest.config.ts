@@ -1,5 +1,6 @@
 import { defineManifest } from '@crxjs/vite-plugin'
 import packageJson from './package.json'
+import { COMMAND_CURRENT_AND_LEFT, COMMAND_CURRENT_AND_RIGHT } from './src/constants'
 
 export default defineManifest({
   manifest_version: 3,
@@ -34,14 +35,14 @@ export default defineManifest({
       },
       description: 'Open TabShift to merge windows',
     },
-    'current-and-right': {
+    [COMMAND_CURRENT_AND_RIGHT]: {
       suggested_key: {
         default: 'Alt+Shift+Right',
         mac: 'MacCtrl+Shift+Right',
       },
       description: 'Move this & right tabs to new window',
     },
-    'current-and-left': {
+    [COMMAND_CURRENT_AND_LEFT]: {
       suggested_key: {
         default: 'Alt+Shift+Left',
         mac: 'MacCtrl+Shift+Left',

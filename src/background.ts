@@ -1,21 +1,22 @@
+import { COMMAND_CURRENT_AND_LEFT, COMMAND_CURRENT_AND_RIGHT } from './constants'
 import { calculateTabIdsToMove, type SplitDirection } from './tabs/calculateTabIdsToMove'
 import { debounce } from './utils/debounce'
 
 const MENU_ITEMS: Record<SplitDirection, chrome.contextMenus.CreateProperties> = {
-  'current-and-right': {
-    id: 'current-and-right',
+  [COMMAND_CURRENT_AND_RIGHT]: {
+    id: COMMAND_CURRENT_AND_RIGHT,
     title: '➡️ Move this && right tabs to new window',
     contexts: ['all'],
   },
-  'current-and-left': {
-    id: 'current-and-left',
+  [COMMAND_CURRENT_AND_LEFT]: {
+    id: COMMAND_CURRENT_AND_LEFT,
     title: '⬅️ Move this && left tabs to new window',
     contexts: ['all'],
   },
 }
 
 const isSplitDirection = (menuItemId: chrome.contextMenus.OnClickData['menuItemId']) =>
-  menuItemId === 'current-and-right' || menuItemId === 'current-and-left'
+  menuItemId === COMMAND_CURRENT_AND_RIGHT || menuItemId === COMMAND_CURRENT_AND_LEFT
 
 async function getActiveWindowTabs() {
   const [activeTab] = await chrome.tabs.query({
@@ -75,40 +76,47 @@ async function createContextMenus() {
 }
 
 async function splitTabs(direction: SplitDirection) {
-  const activeWindowTabs = await getActiveWindowTabs()
+  try {
+    const activeWindowTabs = await getActiveWindowTabs()
 
-  if (!activeWindowTabs) {
-    return
-  }
+    if (!activeWindowTabs) {
+      return
+    }
 
-  const activeTabId = activeWindowTabs.activeTab.id
-  const tabIdsToMove = calculateTabIdsToMove(
-    activeWindowTabs.tabs,
-    activeWindowTabs.activeTab.index,
-    direction,
-  )
+    const activeTabId = activeWindowTabs.activeTab.id
+    const tabIdsToMove = calculateTabIdsToMove(
+      activeWindowTabs.tabs,
+      activeWindowTabs.activeTab.index,
+      direction,
+    )
 
-  if (activeTabId === undefined || !tabIdsToMove.includes(activeTabId)) {
-    return
-  }
+    if (activeTabId === undefined || !tabIdsToMove.includes(activeTabId)) {
+      return
+    }
 
-  // Creating the window with the active tab keeps focus where the user initiated the split.
-  const newWindow = await chrome.windows.create({
-    focused: true,
-    tabId: activeTabId,
-  })
+    // Creating the window with the active tab keeps focus where the user initiated the split.
+    const newWindow = await chrome.windows.create({
+      focused: true,
+      tabId: activeTabId,
+    })
 
-  const remainingTabIds = tabIdsToMove.filter((tabId) => tabId !== activeTabId)
+    const remainingTabIds = tabIdsToMove.filter((tabId) => tabId !== activeTabId)
 
-  if (newWindow?.id !== undefined && remainingTabIds.length > 0) {
-    await chrome.tabs.move(remainingTabIds, {
-      windowId: newWindow.id,
-      // Left splits need prepending so tabs remain in their original left-to-right order.
-      index: direction === 'current-and-left' ? 0 : -1,
+    if (newWindow?.id !== undefined && remainingTabIds.length > 0) {
+      await chrome.tabs.move(remainingTabIds, {
+        windowId: newWindow.id,
+        // Left splits need prepending so tabs remain in their original left-to-right order.
+        index: direction === COMMAND_CURRENT_AND_LEFT ? 0 : -1,
+      })
+    }
+
+    await updateContextMenuState()
+  } catch (error) {
+    console.warn('Tab split was interrupted before completion.', {
+      direction,
+      error,
     })
   }
-
-  await updateContextMenuState()
 }
 
 chrome.runtime.onInstalled.addListener(() => {
