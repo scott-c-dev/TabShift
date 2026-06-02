@@ -1,4 +1,5 @@
 import { calculateTabIdsToMove, type SplitDirection } from './tabs/calculateTabIdsToMove'
+import { debounce } from './utils/debounce'
 
 const MENU_ITEMS: Record<SplitDirection, chrome.contextMenus.CreateProperties> = {
   'current-and-right': {
@@ -58,6 +59,10 @@ async function updateContextMenuState() {
     ),
   )
 }
+
+const updateContextMenuStateDebounced = debounce(() => {
+  void updateContextMenuState()
+}, 200)
 
 async function createContextMenus() {
   await chrome.contextMenus.removeAll()
@@ -119,33 +124,33 @@ chrome.contextMenus.onClicked.addListener((info) => {
 })
 
 chrome.tabs.onActivated.addListener(() => {
-  void updateContextMenuState()
+  updateContextMenuStateDebounced()
 })
 
 chrome.tabs.onUpdated.addListener(() => {
-  void updateContextMenuState()
+  updateContextMenuStateDebounced()
 })
 
 chrome.tabs.onCreated.addListener(() => {
-  void updateContextMenuState()
+  updateContextMenuStateDebounced()
 })
 
 chrome.tabs.onRemoved.addListener(() => {
-  void updateContextMenuState()
+  updateContextMenuStateDebounced()
 })
 
 chrome.tabs.onMoved.addListener(() => {
-  void updateContextMenuState()
+  updateContextMenuStateDebounced()
 })
 
 chrome.tabs.onAttached.addListener(() => {
-  void updateContextMenuState()
+  updateContextMenuStateDebounced()
 })
 
 chrome.tabs.onDetached.addListener(() => {
-  void updateContextMenuState()
+  updateContextMenuStateDebounced()
 })
 
 chrome.windows.onFocusChanged.addListener(() => {
-  void updateContextMenuState()
+  updateContextMenuStateDebounced()
 })
