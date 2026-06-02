@@ -244,10 +244,15 @@ function SourceWindowItem({ sourceWindow, isSelected, onToggle }: SourceWindowIt
       />
       <div className="min-w-0 flex-1 space-y-2">
         <div className="flex items-baseline gap-2">
-          <span className="min-w-0 flex-1 truncate text-sm font-medium text-slate-100">
+          <span
+            className="min-w-0 flex-1 truncate text-sm font-medium text-slate-100"
+            title={title}
+          >
             {title}
           </span>
-          <span className="shrink-0 text-xs text-slate-500">({sourceWindow.tabs.length} tabs)</span>
+          <span className="shrink-0 text-xs text-slate-500">
+            ({sourceWindow.tabs.length} {sourceWindow.tabs.length === 1 ? 'tab' : 'tabs'})
+          </span>
         </div>
         <FaviconMatrix tabs={sourceWindow.tabs} activeTabIndex={activeTab?.index ?? -1} />
       </div>
