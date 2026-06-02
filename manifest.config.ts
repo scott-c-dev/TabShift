@@ -27,17 +27,24 @@ export default defineManifest({
     type: 'module',
   },
   commands: {
+    _execute_action: {
+      suggested_key: {
+        default: 'Alt+Shift+M',
+        mac: 'MacCtrl+Shift+M',
+      },
+      description: 'Open TabShift to merge windows',
+    },
     'current-and-right': {
       suggested_key: {
         default: 'Alt+Shift+Right',
-        mac: 'Alt+Shift+Right',
+        mac: 'MacCtrl+Shift+Right',
       },
       description: 'Move this & right tabs to new window',
     },
     'current-and-left': {
       suggested_key: {
         default: 'Alt+Shift+Left',
-        mac: 'Alt+Shift+Left',
+        mac: 'MacCtrl+Shift+Left',
       },
       description: 'Move this & left tabs to new window',
     },
