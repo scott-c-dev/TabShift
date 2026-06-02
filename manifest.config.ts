@@ -26,5 +26,21 @@ export default defineManifest({
     service_worker: 'src/background.ts',
     type: 'module',
   },
+  commands: {
+    'current-and-right': {
+      suggested_key: {
+        default: 'Alt+Shift+Right',
+        mac: 'Alt+Shift+Right',
+      },
+      description: 'Move this & right tabs to new window',
+    },
+    'current-and-left': {
+      suggested_key: {
+        default: 'Alt+Shift+Left',
+        mac: 'Alt+Shift+Left',
+      },
+      description: 'Move this & left tabs to new window',
+    },
+  },
   permissions: ['contextMenus', 'tabs'],
 })

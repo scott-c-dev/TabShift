@@ -123,6 +123,12 @@ chrome.contextMenus.onClicked.addListener((info) => {
   }
 })
 
+chrome.commands.onCommand.addListener((command) => {
+  if (isSplitDirection(command)) {
+    void splitTabs(command)
+  }
+})
+
 chrome.tabs.onActivated.addListener(() => {
   updateContextMenuStateDebounced()
 })
