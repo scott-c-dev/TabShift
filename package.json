@@ -1,7 +1,7 @@
 {
   "name": "divactive-ai-tabs-merge-split",
   "displayName": "TabShift",
-  "description": "Internal Chrome extension for managing tabs across windows.",
+  "description": "A lightning-fast, keyboard-driven tool to effortlessly split and merge Chrome tabs across windows.",
   "private": true,
   "version": "1.0.0",
   "type": "module",
