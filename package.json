@@ -1,7 +1,17 @@
 {
-  "name": "divactive-ai-tabs-merge-split",
+  "name": "tabshift",
   "displayName": "TabShift",
   "description": "A lightning-fast, keyboard-driven tool to effortlessly split and merge Chrome tabs across windows.",
+  "author": "Xiaoyang (Scott) Chen",
+  "license": "MIT",
+  "homepage": "https://chromewebstore.google.com/detail/tabshift/odalnjcnidkkapngkahmgjdakmajghge",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scott-c-dev/TabShift.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scott-c-dev/TabShift/issues"
+  },
   "private": true,
   "version": "1.0.0",
   "type": "module",
